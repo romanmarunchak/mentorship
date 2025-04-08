@@ -1,6 +1,6 @@
 # pages/base_page.py
 
-from playwright.sync_api import Page
+from playwright.sync_api import Page, Locator
 
 
 class BasePage:
@@ -15,13 +15,18 @@ class BasePage:
         """Return an element by its locator (CSS or XPath)."""
         return self.page.locator(locator)
 
-    def click_element(self, locator: str):
-        """Click an element."""
-        self.get_element(locator).click()
+    def click(self, locator):
+        if isinstance(locator, str):
+            self.get_element(locator).click()
+        elif isinstance(locator, Locator):
+            locator.click()
 
     def fill_input(self, locator: str, value: str):
         """Fill input with a value."""
         self.get_element(locator).fill(value)
+
+    def check(self, locator: str):
+        self.check(locator)
 
     def get_text(self, locator: str) -> str:
         """Get text content of an element."""
